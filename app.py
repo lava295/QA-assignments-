@@ -40,6 +40,7 @@ TEMPLATE = """
     <div class="card">
         <div class="title">🐮 WiseCow</div>
         <div class="subtitle">Smart. Simple. Strong.</div>
+         <div class="subtitle">Happy to join in Accuknox as QA QA Trainee</div>
         <hr>
         <p class="text-muted">Welcome to the world of wisdom!</p>
     </div>
