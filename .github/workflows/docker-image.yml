@@ -1,4 +1,4 @@
-name: Build and Deploy Wisecow
+name: Build and Deploy Wisecow to GKE
 
 on:
   push:
@@ -28,15 +28,21 @@ jobs:
         push: true
         tags: lava295/wisecow:v1
 
-    - name: Set up kubectl
-      uses: azure/setup-kubectl@v3
-      with:
-        version: 'v1.26.0'
-
-    - name: Configure kubeconfig (plain text)
+    - name: Decode and write GCP credentials
       run: |
-        mkdir -p $HOME/.kube
-        echo "${{ secrets.KUBECONFIG_DATA }}" > $HOME/.kube/config
+        echo "${{ secrets.GCP_KEY }}" | base64 -d > "${{ github.workspace }}/gcp-key.json"
+
+    - name: Authenticate to Google Cloud
+      uses: google-github-actions/auth@v1
+      with:
+        credentials_json: ${{ secrets.GCP_KEY }}
+
+    - name: Get GKE credentials
+      uses: google-github-actions/get-gke-credentials@v1
+      with:
+        cluster_name: autopilot-cluster-1 # 👈 your GKE cluster name
+        location: us-central1             # 👈 zone or region (e.g., us-central1, us-central1-a)
+        project_id: neon-gist-459009-f8    # 👈 your GCP project ID
 
     - name: Deploy to Kubernetes
       run: |
