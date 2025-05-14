@@ -26,4 +26,4 @@ jobs:
       with:
         context: .
         push: true
-        tags: lava@295/wisecow:v1
+        tags: lava295/wisecow:v1
